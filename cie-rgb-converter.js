@@ -58,9 +58,9 @@ exports.cie_to_rgb = function ( x, y, brightness)
 	const Z   = (Y / y) * z;
 
 	// Convert to RGB using Wide RGB D65 conversion
-	let red 	=  X * 1.656492 - Y * 0.354851 - Z * 0.255038;
-	let green = -X * 0.707196 + Y * 1.655397 + Z * 0.036152;
-	let blue 	=  X * 0.051713 - Y * 0.121364 + Z * 1.011530;
+	var red 	=  X * 1.656492 - Y * 0.354851 - Z * 0.255038;
+	var green = -X * 0.707196 + Y * 1.655397 + Z * 0.036152;
+	var blue 	=  X * 0.051713 - Y * 0.121364 + Z * 1.011530;
 
 	// If red, green or blue is larger than 1.0 set it back to the maximum of 1.0
 	if (red > blue && red > green && red > 1.0) {
@@ -108,9 +108,9 @@ exports.rgb_to_cie = function ( red, green, blue)
 {
 	// Apply a gamma correction to the RGB values, which makes the color more vivid
   // and more the like the color displayed on the screen of your device
-	let red 	= (red   > 0.04045) ? Math.pow((red   + 0.055) / 1.055, 2.4) : (red   / 12.92);
-	let green = (green > 0.04045) ? Math.pow((green + 0.055) / 1.055, 2.4) : (green / 12.92);
-	let blue 	= (blue  > 0.04045) ? Math.pow((blue  + 0.055) / 1.055, 2.4) : (blue  / 12.92); 
+	var red 	= (red   > 0.04045) ? Math.pow((red   + 0.055) / 1.055, 2.4) : (red   / 12.92);
+	var green = (green > 0.04045) ? Math.pow((green + 0.055) / 1.055, 2.4) : (green / 12.92);
+	var blue 	= (blue  > 0.04045) ? Math.pow((blue  + 0.055) / 1.055, 2.4) : (blue  / 12.92); 
 
 	// RGB values to XYZ using the Wide RGB D65 conversion formula
 	const X 		= red * 0.664511 + green * 0.154324 + blue * 0.162028;
