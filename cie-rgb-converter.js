@@ -108,9 +108,9 @@ exports.rgb_to_cie = function ( red, green, blue)
 {
 	// Apply a gamma correction to the RGB values, which makes the color more vivid
   // and more the like the color displayed on the screen of your device
-	const red 	= (red   > 0.04045) ? Math.pow((red   + 0.055) / 1.055, 2.4) : (red   / 12.92);
-	const green = (green > 0.04045) ? Math.pow((green + 0.055) / 1.055, 2.4) : (green / 12.92);
-	const blue 	= (blue  > 0.04045) ? Math.pow((blue  + 0.055) / 1.055, 2.4) : (blue  / 12.92); 
+	let red 	= (red   > 0.04045) ? Math.pow((red   + 0.055) / 1.055, 2.4) : (red   / 12.92);
+	let green = (green > 0.04045) ? Math.pow((green + 0.055) / 1.055, 2.4) : (green / 12.92);
+	let blue 	= (blue  > 0.04045) ? Math.pow((blue  + 0.055) / 1.055, 2.4) : (blue  / 12.92); 
 
 	// RGB values to XYZ using the Wide RGB D65 conversion formula
 	const X 		= red * 0.664511 + green * 0.154324 + blue * 0.162028;
