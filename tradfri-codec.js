@@ -91,8 +91,8 @@ exports.init = function (params) {
       },
 
       colorTemperature: {
+        // To IKEA
         encode: function (message) {
-          console.log("Temperature: ", message);
           let ikeaMax = 454;
           let ikeaMin = 250;
           let ikeaRange = ikeaMax - ikeaMin;
@@ -102,18 +102,15 @@ exports.init = function (params) {
           let zigbeeRange = zigbeeMax - zigbeeMin;
 
           const colorTemp = Math.round(
-            ((message - zigbeeMin) * ikeaRange) / zigbeeRange + zigbeeMin
+            ((message - zigbeeMin) * ikeaRange) / zigbeeRange + ikeaMin
           );
 
-          const brightness = Math.round(message);
-
           return JSON.stringify({
-            state: brightness ? "ON" : "OFF",
-            brightness: brightness,
             color_temp: colorTemp,
           });
         },
 
+        // To HomeKit
         decode: function (message) {
           let ikeaMax = 454;
           let ikeaMin = 250;
