@@ -92,6 +92,7 @@ exports.init = function (params) {
 
       colorTemperature: {
         encode: function (message) {
+          console.log("Temperature: ", message);
           let ikeaMax = 454;
           let ikeaMin = 250;
           let ikeaRange = ikeaMax - ikeaMin;
@@ -104,7 +105,11 @@ exports.init = function (params) {
             ((message - zigbeeMin) * ikeaRange) / zigbeeRange + zigbeeMin
           );
 
+          const brightness = Math.round(message);
+
           return JSON.stringify({
+            state: brightness ? "ON" : "OFF",
+            brightness: brightness,
             color_temp: colorTemp,
           });
         },
