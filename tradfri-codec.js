@@ -13,7 +13,7 @@ const conv = require("./cie-rgb-converter.js");
  * @param {object} params.config Configuration
  * @return {object} Encode and/or decode functions
  */
-exports.init = function (params) {
+exports.init = function(params) {
   // extract parameters for convenience
   let { log, config } = params;
   log(`Trådfri codec initialized with ${config.name}.`);
@@ -58,11 +58,11 @@ exports.init = function (params) {
 
     properties: {
       on: {
-        encode: function (message) {
+        encode: function(message) {
           return JSON.stringify({ state: message ? "ON" : "OFF" });
         },
 
-        decode: function (message) {
+        decode: function(message) {
           const msg = JSON.parse(message);
           if (msg.state) {
             return msg.state == "ON";
@@ -71,7 +71,7 @@ exports.init = function (params) {
       },
 
       brightness: {
-        encode: function (message) {
+        encode: function(message) {
           // scale up to 0-254 range
           const brightness = Math.round(message * 2.54);
 
@@ -81,7 +81,7 @@ exports.init = function (params) {
           });
         },
 
-        decode: function (message) {
+        decode: function(message) {
           // scale down to 0-100 range
           const msg = JSON.parse(message);
           if (msg.brightness) {
@@ -92,7 +92,7 @@ exports.init = function (params) {
 
       colorTemperature: {
         // To IKEA
-        encode: function (message) {
+        encode: function(message) {
           let ikeaMax = 454;
           let ikeaMin = 250;
           let ikeaRange = ikeaMax - ikeaMin;
@@ -111,7 +111,7 @@ exports.init = function (params) {
         },
 
         // To HomeKit
-        decode: function (message) {
+        decode: function(message) {
           let ikeaMax = 454;
           let ikeaMin = 250;
           let ikeaRange = ikeaMax - ikeaMin;
@@ -131,21 +131,29 @@ exports.init = function (params) {
       },
 
       RGB: {
-        encode: function (message) {
+        encode: function(message) {
+          log(`RGB encode request: ${message}`);
+
           const rgb = message.split(","),
             // http://www.w3.org/TR/AERT#color-contrast
             brightness = Math.round(
               0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]
             );
 
-          return JSON.stringify({
+          let response = JSON.stringify({
             state: brightness ? "ON" : "OFF",
             brightness: brightness,
             color: { r: +rgb[0], g: +rgb[1], b: +rgb[2] },
           });
+
+          log(`RGB encode response: ${response}`);
+
+          return response;
         },
 
-        decode: function (message) {
+        decode: function(message) {
+          log(`RGB decode request: ${message}`);
+
           const msg = JSON.parse(message);
           if (msg.color) {
             const rgb = conv.cie_to_rgb(
